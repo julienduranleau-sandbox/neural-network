@@ -5,7 +5,7 @@ class Neuron {
         this.ins = []
         this.outs = []
         this.bias = 0 //Math.random() * 2 - 1
-        this.value = null
+        this.value = 0
         this.errorOffset = 0
         this.tmpSumValue = 0
         this.tmpSumError = 0

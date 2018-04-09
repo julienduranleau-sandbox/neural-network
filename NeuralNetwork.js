@@ -64,8 +64,11 @@ class NeuralNetwork {
         }
     }
 
-    draw() {
-        let drawOffsets = { x: 100, y: 100 }
+    draw(drawOffsets) {
+        if (!drawOffsets) {
+            drawOffsets = { x: 0, y: 0 }
+        }
+
         this.inputLayer.draw(drawOffsets)
 
         this.hiddenLayers.forEach(hiddenLayer => {

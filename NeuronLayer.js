@@ -83,9 +83,12 @@ class NeuronLayer {
     draw(drawOffsets) {
         let drawOffsetsCopy = { x : drawOffsets.x, y: drawOffsets.y }
 
+        let spacing = 700 / this.neurons.length
+        drawOffsets.y += (700 - ((this.neurons.length - 1) * spacing)) / 2
+
         this.neurons.forEach(neuron => {
             neuron.draw(drawOffsets)
-            drawOffsets.y += 100
+            drawOffsets.y += spacing
         })
 
         drawOffsets.x = drawOffsetsCopy.x
