@@ -12,10 +12,15 @@ class NeuronLayer {
         }
     }
 
-    getValues() {
-        let lst = []
-        this.neurons.forEach(neuron => lst.push(neuron.value))
-        return lst
+    getValues(raw) {
+        return this.neurons.reduce((lst, neuron) => {
+            if (raw) {
+                lst.push(neuron.value)
+            } else {
+                lst.push(Math.round(neuron.value * 1000) / 1000)
+            }
+            return lst
+        }, [])
     }
 
     setValues(values) {
@@ -48,15 +53,9 @@ class NeuronLayer {
 
     backPropagate() {
         if (this.previousLayer) {
-            //console.log("backPropagate for "+this.name)
             this.neurons.forEach(neuron => neuron.backPropagate())
             this.previousLayer.computeErrorValues()
             this.previousLayer.applyDeltaWeights()
-/*
-            this.neurons.forEach(neuron => {
-                console.log(neuron.errorOffset)
-            })
-*/
             this.previousLayer.backPropagate()
         }
     }
@@ -88,6 +87,21 @@ class NeuronLayer {
 
         this.neurons.forEach(neuron => {
             neuron.draw(drawOffsets)
+            drawOffsets.y += spacing
+        })
+
+        drawOffsets.x = drawOffsetsCopy.x
+        drawOffsets.y = drawOffsetsCopy.y
+    }
+
+    drawConnections(drawOffsets) {
+        let drawOffsetsCopy = { x : drawOffsets.x, y: drawOffsets.y }
+
+        let spacing = 700 / this.neurons.length
+        drawOffsets.y += (700 - ((this.neurons.length - 1) * spacing)) / 2
+
+        this.neurons.forEach(neuron => {
+            neuron.drawConnections(drawOffsets)
             drawOffsets.y += spacing
         })
 

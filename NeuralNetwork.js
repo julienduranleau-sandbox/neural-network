@@ -11,6 +11,8 @@ class NeuralNetwork {
         this.connectLayers()
     }
 
+    static get learningRate() { return 0.1 }
+
     connectLayers() {
         // input to first hidden layer
         this.inputLayer.connect(this.hiddenLayers[0])
@@ -69,14 +71,31 @@ class NeuralNetwork {
             drawOffsets = { x: 0, y: 0 }
         }
 
+        let drawOffsetsCopy = { x : drawOffsets.x, y: drawOffsets.y }
+
+        this.inputLayer.drawConnections(drawOffsets)
+
+        this.hiddenLayers.forEach(hiddenLayer => {
+            drawOffsets.x += 150
+            hiddenLayer.drawConnections(drawOffsets)
+        })
+
+        drawOffsets.x += 150
+        this.outputLayer.drawConnections(drawOffsets)
+
+        // --------------------------
+        
+        drawOffsets.x = drawOffsetsCopy.x
+        drawOffsets.y = drawOffsetsCopy.y
+
         this.inputLayer.draw(drawOffsets)
 
         this.hiddenLayers.forEach(hiddenLayer => {
-            drawOffsets.x += 100
+            drawOffsets.x += 150
             hiddenLayer.draw(drawOffsets)
         })
 
-        drawOffsets.x += 100
+        drawOffsets.x += 150
         this.outputLayer.draw(drawOffsets)
     }
 

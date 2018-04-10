@@ -1,33 +1,39 @@
 class NeuronConnection {
-    constructor(a, b, weight) {
-        this.a = a
-        this.b = b
-        this.weight = weight || (Math.random() * 2 - 1)
+    constructor(from, to) {
+        this.from = from
+        this.to = to
+        this.weight = Math.random()
     }
 
     feedForward() {
-        this.b.tmpSumValue += this.a.value * this.weight
+        this.to.tmpSumValue += this.from.value * this.weight
     }
 
     backPropagate() {
-        this.a.tmpSumError += this.b.errorOffset * this.weight
+        //this.from.tmpSumError += this.to.errorOffset * (this.weight / this.from.sumOfWeightsForOutgoingConnections())
+        this.from.tmpSumError += this.to.errorOffset * this.weight
     }
 
     applyDeltaWeights() {
-        let deltaWeight = 0.1 * this.b.errorOffset * NeuralNetwork.tanh(this.b.value, true) * this.a.value
+        let deltaWeight = NeuralNetwork.learningRate * this.to.errorOffset * NeuralNetwork.dsigmoid(this.to.value, true) * this.from.value
         this.weight += deltaWeight
     }
 
     draw() {
-        stroke(255)
-        strokeWeight(1)
-        line(this.a.lastDrawOffset.x, this.a.lastDrawOffset.y, this.b.lastDrawOffset.x, this.b.lastDrawOffset.y)
-
-        textSize(9)
+        textSize(11)
         noStroke()
         fill(255)
-        let a = Math.atan2(this.b.lastDrawOffset.y - this.a.lastDrawOffset.y, this.b.lastDrawOffset.x - this.a.lastDrawOffset.x)
-        let len = 30
-        text(this.weight.toFixed(2), this.a.lastDrawOffset.x + Math.cos(a) * len, this.a.lastDrawOffset.y + Math.sin(a) * len)
+        let a = Math.atan2(this.to.lastDrawOffset.y - this.from.lastDrawOffset.y, this.to.lastDrawOffset.x - this.from.lastDrawOffset.x)
+        let pos = {
+            x: this.from.lastDrawOffset.x + Math.cos(a) * 45,
+            y: this.from.lastDrawOffset.y + Math.sin(a) * 45
+        }
+        text(this.weight.toFixed(2), pos.x, pos.y)
+    }
+
+    drawConnections() {
+        stroke(100)
+        strokeWeight(1)
+        line(this.from.lastDrawOffset.x, this.from.lastDrawOffset.y, this.to.lastDrawOffset.x, this.to.lastDrawOffset.y)
     }
 }
