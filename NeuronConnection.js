@@ -10,12 +10,16 @@ class NeuronConnection {
     }
 
     backPropagate() {
-        //this.from.tmpSumError += this.to.errorOffset * (this.weight / this.from.sumOfWeightsForOutgoingConnections())
-        this.from.tmpSumError += this.to.errorOffset * this.weight
+        this.from.tmpSumError += this.to.errorOffset * (this.weight / this.to.sumOfWeightsForIncomingConnections())
+        //this.from.tmpSumError += this.to.errorOffset * this.weight
     }
 
     applyDeltaWeights() {
-        let deltaWeight = NeuralNetwork.learningRate * this.to.errorOffset * NeuralNetwork.dsigmoid(this.to.value, true) * this.from.value
+        let x = this.from.value
+        let lr = NeuralNetwork.learningRate
+        let error = this.to.errorOffset
+        let output = this.to.value
+        let deltaWeight = lr * error * NeuralNetwork.derivActivationFn(output, true) * x
         this.weight += deltaWeight
     }
 

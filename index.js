@@ -3,7 +3,7 @@ class App {
         createCanvas(window.innerWidth, window.innerHeight)
         frameRate(1)
 
-        this.neuralNetwork = new NeuralNetwork(2, [2], 1)
+        this.neuralNetwork = new NeuralNetwork(2, [3], 1)
 
         // debug training data
         // this.trainingData = [
@@ -29,21 +29,17 @@ class App {
             }
         ]
 
-        this.neuralNetwork.train([0,1], [1])
+        this.stepTraining(30000)
+        console.log(this.neuralNetwork.predict([0,1]), " be 1")
+        console.log(this.neuralNetwork.predict([1,0]), " be 1")
+        console.log(this.neuralNetwork.predict([0,0]), " be 0")
+        console.log(this.neuralNetwork.predict([1,1]), " be 0")
 
         this.draw()
 
         // exposed for debug purposes only
         window.nn = this.neuralNetwork
         window.step = this.stepTraining.bind(this)
-
-        /*
-        step(1000000)
-        console.log(nn.predict([0,1]), "should be 1")
-        console.log(nn.predict([1,0]), "should be 1")
-        console.log(nn.predict([0,0]), "should be 0")
-        console.log(nn.predict([1,1]), "should be 0")
-        */
     }
 
     stepTraining(nSteps) {

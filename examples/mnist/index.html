@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Neural Network - MNIST</title>
+        <style>
+            html, body {
+                padding: 0px;
+                margin: 0px;
+                overflow: hidden;
+                background: #151515;
+            }
+            canvas {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                image-rendering: pixelated;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="../../libs/stats.min.js"></script>
+        <script src="../../libs/p5.min.js"></script>
+        <script src="../../libs/p5.dom.js"></script>
+        <script src="../../NeuralNetwork.js"></script>
+        <script src="../../Neuron.js"></script>
+        <script src="../../NeuronConnection.js"></script>
+        <script src="../../NeuronLayer.js"></script>
+        <script src="MNISTLoader.js"></script>
+        <script src="index.js"></script>
+        <script type="text/javascript">
+        let app;
+
+        function setup() { app = new App() }
+        function draw() { app.draw() }
+        </script>
+    </body>
+</html>

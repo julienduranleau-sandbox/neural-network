@@ -12,6 +12,10 @@ class NeuralNetwork {
     }
 
     static get learningRate() { return 0.1 }
+    // static get activationFn() { return NeuralNetwork.sigmoid }
+    // static get derivActivationFn() { return NeuralNetwork.dsigmoid }
+    static get activationFn() { return NeuralNetwork.tanh }
+    static get derivActivationFn() { return NeuralNetwork.dtanh }
 
     connectLayers() {
         // input to first hidden layer
@@ -62,7 +66,7 @@ class NeuralNetwork {
         if (skipTanh) {
             return 1 - (x * x)
         } else {
-            return 1 - (tanh(x) * tanh(x))
+            return 1 - (this.tanh(x) * this.tanh(x))
         }
     }
 
@@ -84,7 +88,7 @@ class NeuralNetwork {
         this.outputLayer.drawConnections(drawOffsets)
 
         // --------------------------
-        
+
         drawOffsets.x = drawOffsetsCopy.x
         drawOffsets.y = drawOffsetsCopy.y
 

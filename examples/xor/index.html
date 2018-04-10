@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Neural Network - XOR</title>
+        <style>
+            html, body {
+                padding: 0px;
+                margin: 0px;
+                overflow: hidden;
+                background: #151515;
+            }
+            canvas {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(100,100);
+                image-rendering: pixelated;
+            }
+            .text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 240px;
+                height: 240px;
+                margin-left: -120px;
+                margin-top: -120px;
+            }
+            .text div {
+                position: absolute;
+                color: #fff;
+                font-size: 16px;
+                font-family: Helvetica
+            }
+            .l-1 { top: 0px; left: 0px; }
+            .l-2 { top: 0px; right: 0px; }
+            .l-3 { bottom: 0px; right: 0px; }
+            .l-4 { bottom: 0px; left: 0px; }
+        </style>
+    </head>
+    <body>
+        <div class="text">
+            <div class="l-1">0,0</div>
+            <div class="l-2">1,0</div>
+            <div class="l-3">1,1</div>
+            <div class="l-4">0,1</div>
+        </div>
+        <script src="../../libs/stats.min.js"></script>
+        <script src="../../libs/p5.min.js"></script>
+        <script src="../../libs/p5.dom.js"></script>
+        <script src="../../NeuralNetwork.js"></script>
+        <script src="../../Neuron.js"></script>
+        <script src="../../NeuronConnection.js"></script>
+        <script src="../../NeuronLayer.js"></script>
+        <script src="index.js"></script>
+        <script type="text/javascript">
+        let app;
+
+        function setup() { app = new App() }
+        function draw() { app.draw() }
+        </script>
+    </body>
+</html>

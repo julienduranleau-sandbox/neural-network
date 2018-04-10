@@ -7,10 +7,21 @@ class NeuronLayer {
         this.nextLayer = null
 
         for (let i = 0; i < nNeurons; i++) {
-            let neuron = new Neuron(this.name+"_neuron"+i)
+            let neuron = null
+
+            if (this.isInputs) {
+                neuron = new Neuron(this.name+"_neuron"+i, 0)
+            } else {
+                neuron = new Neuron(this.name+"_neuron"+i)
+            }
+
             this.neurons.push(neuron)
         }
     }
+
+    get isInputs() { return this.name === "Inputs" }
+    get isOutputs() { return this.name === "Outputs" }
+    get isHiddens() { return !(this.isInputs || this.isOutputs) }
 
     getValues(raw) {
         return this.neurons.reduce((lst, neuron) => {
@@ -57,11 +68,18 @@ class NeuronLayer {
             this.previousLayer.computeErrorValues()
             this.previousLayer.applyDeltaWeights()
             this.previousLayer.backPropagate()
+            if (this.previousLayer.isInputs === false) {
+                this.previousLayer.applyDeltaBias()
+            }
         }
     }
 
     applyDeltaWeights() {
         this.neurons.forEach(neuron => neuron.applyDeltaWeights())
+    }
+
+    applyDeltaBias() {
+        this.neurons.forEach(neuron => neuron.applyDeltaBias())
     }
 
     computeErrorValues() {

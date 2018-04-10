@@ -1,10 +1,12 @@
 class Neuron {
 
-    constructor(name) {
+    constructor(name, bias) {
+        if (bias === undefined) bias = Math.random()
+
         this.name = name
         this.ins = []
         this.outs = []
-        this.bias = Math.random()
+        this.bias = bias
         this.value = 0
         this.errorOffset = 0
         this.tmpSumValue = 0
@@ -18,8 +20,8 @@ class Neuron {
         otherNeuron.addNewInboundConnection(connection)
     }
 
-    sumOfWeightsForOutgoingConnections() {
-        return this.outs.reduce((sum, connection) => sum += connection.weight, 0)
+    sumOfWeightsForIncomingConnections() {
+        return this.ins.reduce((sum, connection) => sum += connection.weight, 0)
     }
 
     addNewInboundConnection(connection) {
@@ -35,7 +37,7 @@ class Neuron {
     }
 
     computeFeedValues() {
-        this.value = NeuralNetwork.sigmoid(this.tmpSumValue + this.bias)
+        this.value = NeuralNetwork.activationFn(this.tmpSumValue + this.bias)
         this.tmpSumValue = 0
     }
 
@@ -53,13 +55,15 @@ class Neuron {
     }
 
     computeErrorValues() {
-        console.log('setting error '+this.tmpSumError+'for '+this.name)
+        //console.log('setting error '+this.tmpSumError+'for '+this.name)
         this.errorOffset = this.tmpSumError
         this.tmpSumError = 0
     }
 
     applyDeltaWeights() {
         this.outs.forEach(connection => connection.applyDeltaWeights())
+    }
+    applyDeltaBias() {
         let deltaBias = NeuralNetwork.learningRate * this.errorOffset
         this.bias += deltaBias
     }
@@ -67,16 +71,23 @@ class Neuron {
     draw(drawOffsets) {
         this.lastDrawOffset = {x: drawOffsets.x, y: drawOffsets.y }
 
-        fill(this.value * 125 + 125)
+        fill((this.value + 1) * 80 + 125)
         noStroke()
         rect(drawOffsets.x - 30, drawOffsets.y - 30, 60, 60, 10);
 
         textSize(11)
         noStroke()
         fill(0)
-        text("val: "+this.value.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y - 12)
-        text("bias: "+this.bias.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y + 3)
-        text("err: "+this.errorOffset.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y + 18)
+        // if (this.name.indexOf('Input') > -1) {
+        //     text("In: "+this.value.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y + 3)
+        // } else if (this.name.indexOf('Output') > -1) {
+        //     text("Out: "+this.value.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y - 5)
+        //     text("err: "+this.errorOffset.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y + 10)
+        // } else {
+            text("val: "+this.value.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y - 12)
+            text("bias: "+this.bias.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y + 3)
+            text("err: "+this.errorOffset.toFixed(2), this.lastDrawOffset.x - 22, this.lastDrawOffset.y + 18)
+        // }
 
         this.ins.forEach(connection => connection.draw())
     }
